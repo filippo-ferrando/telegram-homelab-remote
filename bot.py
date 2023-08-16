@@ -28,7 +28,7 @@ with open("TOKEN.txt", "r") as token_file:
 def playbook_runner(playbook_name):
     """
 
-    :param playbook_name: 
+    :param playbook_name:
 
     """
     # -> not the definitive path but for now it will do
@@ -63,8 +63,8 @@ def host_up_controll():
 def custom_command_runner(host, command):  # not much but works so far
     """
 
-    :param host: 
-    :param command: 
+    :param host:
+    :param command:
 
     """
     # structure of the command
@@ -98,7 +98,7 @@ class TelegramBot:
     def handle_message(self, msg):
         """
 
-        :param msg: 
+        :param msg:
 
         """
         content_type, chat_type, chat_id = telepot.glance(msg)
