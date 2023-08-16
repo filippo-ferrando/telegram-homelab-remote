@@ -7,8 +7,8 @@ I want to be able to execute ansible playbook from anywhere with only my phone a
 ## Features
 - ansible-playbook runner
 - ups control
-- custom command runner
-- host up control
+- custom command runner 
+- host up control 
 - we'll see...
 
 ## Technologies
