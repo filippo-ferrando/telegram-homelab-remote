@@ -8,7 +8,7 @@
 # - Launch custom command on selected host      :tikck
 
 import time
-import os
+from os.path import exists
 import subprocess
 import ansible_runner
 import logging
@@ -21,6 +21,8 @@ import telepot
 with open('TOKEN.txt', 'r') as token_file:
     TOKEN = token_file.read().replace('\n', '')
 
+global CHAT_ID
+
 # Version 0.1 will be able to launch ansible playbooks on remote hosts
 
 # pass a host is unnecessary, the playbook will do it in the hosts section of the yaml file
@@ -28,6 +30,22 @@ def playbook_runner(playbook_name):
         r = ansible_runner.run(private_data_dir='/.ansible/playbooks', playbook=playbook_name) # -> not the definitive path but for now it will do
         #print("{}: {}".format(r.status, r.rc))
         return r.status, r.rc # -> this will return the status and the return code of the playbook
+
+def check_ups_battery(self):
+    global CHAT_ID
+    # controll if .ups_battery.alert exists
+    if(exists("/.ups_battery.alert")):
+        # send text to admin
+        self.bot.sendMessage(CHAT_ID, "Ups battery mode on, sending shutdown command to all hosts")
+        # send shutdown command to all hosts
+        status, rc = playbook_runner("shutdown_ups.yml")
+        msg_return = "Status: " + status + "\nReturn code: " + rc
+        self.bot.sendMessage(CHAT_ID, msg_return)
+        # delete .ups_battery.alert
+        subprocess.check_output("rm /.ups_battery.alert", shell=True, stderr=subprocess.STDOUT)
+    else:
+        pass
+
 
 def ups_control():
         # Control if ups_battery.alert exists
@@ -67,7 +85,9 @@ class TelegramBot:
         self.logger.addHandler(ch)
     
     def handle_message(self, msg):
+        global CHAT_ID
         content_type, chat_type, chat_id = telepot.glance(msg)
+        CHAT_ID = chat_id
         message = msg['text'].split(" ")
         if(message[0] == "/run"):
             status, rc = playbook_runner(f"{message[1]}.yml")
@@ -88,8 +108,8 @@ class TelegramBot:
         self.logger.info('Bot is listening...')
         while True:
             try:
-                time.sleep(10)
-                # check_ups_battery() -> this will work as a listener for the ups battery activity
+                time.sleep(1800)
+                check_ups_battery(self) # -> this will work as a listener for the ups battery activity
             except KeyboardInterrupt:
                 self.logger.info('Bot stopped')
                 exit()
