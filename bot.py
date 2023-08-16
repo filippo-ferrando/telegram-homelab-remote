@@ -1,12 +1,10 @@
 # Telegram bot that allows to launch ansible playbooks on remote hosts
 # Also allows the admin to know if the ups is on battery mode or not
-
 # FEATURES:
 # - Launch ansible playbooks on remote hosts    :tick
 # - Know if the ups is on battery mode or not
 # - Know if the hosts are up or not             :tick
 # - Launch custom command on selected host      :tikck
-
 import logging
 import os
 import subprocess
