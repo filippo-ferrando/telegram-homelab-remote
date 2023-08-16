@@ -28,6 +28,11 @@ with open("TOKEN.txt", "r") as token_file:
 
 
 def playbook_runner(playbook_name):
+    """
+
+    :param playbook_name: 
+
+    """
     # -> not the definitive path but for now it will do
     r = ansible_runner.run(
         private_data_dir="/.ansible/playbooks", playbook=playbook_name
@@ -38,6 +43,7 @@ def playbook_runner(playbook_name):
 
 
 def ups_control():
+    """ """
     # Control if ups_battery.alert exists
     # if so return battery mode on
     # else return normal state
@@ -45,6 +51,7 @@ def ups_control():
 
 
 def host_up_controll():
+    """ """
     # use a host file and send a ping
     with open(".hosts.txt", "r") as host_file:
         host_list = host_file.read().split("\n")
@@ -56,6 +63,12 @@ def host_up_controll():
 
 
 def custom_command_runner(host, command):  # not much but works so far
+    """
+
+    :param host: 
+    :param command: 
+
+    """
     # structure of the command
     # sudo ansible <host/group> -m shell -a "<command>"
     # not the best way but using ansible is easier than paramiko in this case
@@ -66,6 +79,7 @@ def custom_command_runner(host, command):  # not much but works so far
 
 
 class TelegramBot:
+    """ """
     def __init__(self, bot_token):
         self.bot = telepot.Bot(bot_token)
         self.logger = logging.getLogger("TelegramBot")
@@ -73,6 +87,7 @@ class TelegramBot:
         self.setup_logger()
 
     def setup_logger(self):
+        """ """
         formatter = logging.Formatter(
             "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
         )
@@ -83,6 +98,11 @@ class TelegramBot:
         self.logger.addHandler(ch)
 
     def handle_message(self, msg):
+        """
+
+        :param msg: 
+
+        """
         content_type, chat_type, chat_id = telepot.glance(msg)
         message = msg["text"].split(" ")
         if message[0] == "/run":
@@ -100,6 +120,7 @@ class TelegramBot:
             self.bot.sendMessage(chat_id, msg)
 
     def start(self):
+        """ """
         self.bot.message_loop(self.handle_message)
         self.logger.info("Bot is listening...")
         while True:
