@@ -15,7 +15,6 @@ import telepot
 
 # Importing the telepot library
 
-
 # Importing the token file
 with open("TOKEN.txt", "r") as token_file:
     TOKEN = token_file.read().replace("\n", "")
@@ -32,9 +31,8 @@ def playbook_runner(playbook_name):
 
     """
     # -> not the definitive path but for now it will do
-    r = ansible_runner.run(
-        private_data_dir="/.ansible/playbooks", playbook=playbook_name
-    )
+    r = ansible_runner.run(private_data_dir="/.ansible/playbooks",
+                           playbook=playbook_name)
     # print("{}: {}".format(r.status, r.rc))
     # -> this will return the status and the return code of the playbook
     return r.status, r.rc
@@ -55,7 +53,8 @@ def host_up_controll():
         host_list = host_file.read().split("\n")
     responses = {}
     for host in host_list:
-        responses[host] = subprocess.check_output(f"ping -c 1 {host}", shell=True)
+        responses[host] = subprocess.check_output(f"ping -c 1 {host}",
+                                                  shell=True)
 
     return responses
 
@@ -70,14 +69,15 @@ def custom_command_runner(host, command):  # not much but works so far
     # structure of the command
     # sudo ansible <host/group> -m shell -a "<command>"
     # not the best way but using ansible is easier than paramiko in this case
-    response = subprocess.check_output(
-        f"ansible {host} -m shell -a {command}", shell=True, stderr=subprocess.STDOUT
-    )
+    response = subprocess.check_output(f"ansible {host} -m shell -a {command}",
+                                       shell=True,
+                                       stderr=subprocess.STDOUT)
     return response
 
 
 class TelegramBot:
     """ """
+
     def __init__(self, bot_token):
         self.bot = telepot.Bot(bot_token)
         self.logger = logging.getLogger("TelegramBot")
@@ -87,8 +87,7 @@ class TelegramBot:
     def setup_logger(self):
         """ """
         formatter = logging.Formatter(
-            "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
-        )
+            "%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 
         # Log to console
         ch = logging.StreamHandler()
