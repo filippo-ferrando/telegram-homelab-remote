@@ -23,10 +23,11 @@ with open('TOKEN.txt', 'r') as token_file:
 
 # Version 0.1 will be able to launch ansible playbooks on remote hosts
 
+# pass a host is unnecessary, the playbook will do it in the hosts section of the yaml file
 def playbook_runner(playbook_name):
-        r = ansible_runner.run(private_data_dir='/tmp/', playbook=playbook_name)
-        print("{}: {}".format(r.status, r.rc))
-        return r.status, r.rc
+        r = ansible_runner.run(private_data_dir='/.ansible/playbooks', playbook=playbook_name) # -> not the definitive path but for now it will do
+        #print("{}: {}".format(r.status, r.rc))
+        return r.status, r.rc # -> this will return the status and the return code of the playbook
 
 def ups_control():
         # Control if ups_battery.alert exists
@@ -48,7 +49,7 @@ def custom_command_runner(host, command):
     # using ansible because why not
     # structure of the command
         # sudo ansible <host/group> -m shell -a "<command>"
-    response = subprocess.check_output(f"sudo ansible {host} -m shell -a {command}", shell=True)
+    response = subprocess.check_output(f"ansible {host} -m shell -a {command}", shell=True)
     return response
 
 class TelegramBot:
@@ -70,7 +71,7 @@ class TelegramBot:
         content_type, chat_type, chat_id = telepot.glance(msg)
         message = msg['text'].split(" ")
         if(message[0] == "/run"):
-            status, rc = playbook_runner(message[1])
+            status, rc = playbook_runner(f"{message[1]}.yml")
             msg_return = "Status: " + status + "\nReturn code: " + rc
             self.bot.sendMessage(chat_id, msg_return)
         elif(message[0] == "/battery"):
@@ -80,7 +81,7 @@ class TelegramBot:
             reponses = host_up_controll()
             self.bot.sendMessage(chat_id, reponses)
         elif(message[0] == "/command"):
-            msg = custom_command_runner(message[1], message[2])     
+            msg = custom_command_runner(message[1], f"'{message[2]}'")     
             self.bot.sendMessage(chat_id, msg)
     
     def start(self):
