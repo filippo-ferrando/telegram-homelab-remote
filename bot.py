@@ -45,11 +45,10 @@ def host_up_controll():
 
     return responses
 
-def custom_command_runner(host, command):
-    # using ansible because why not
+def custom_command_runner(host, command): #not much but works so far
     # structure of the command
         # sudo ansible <host/group> -m shell -a "<command>"
-    response = subprocess.check_output(f"ansible {host} -m shell -a {command}", shell=True)
+    response = subprocess.check_output(f"ansible {host} -m shell -a {command}", shell=True, stderr=subprocess.STDOUT) # not the best way but using ansible is easier than paramiko in this case
     return response
 
 class TelegramBot:
