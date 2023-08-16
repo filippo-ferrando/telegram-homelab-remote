@@ -41,7 +41,7 @@ def host_up_controll():
         host_list = host_file.read().split("\n")
     responses = {}
     for host in host_list:
-        responses[host] = subprocess.check_output(f"ping -c 1 {host}", shell=True)
+        responses[host] = subprocess.check_output(f"ping -c 1 {host}", shell=True, stderr=subprocess.STDOUT)
 
     return responses
 
