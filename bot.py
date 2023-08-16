@@ -18,8 +18,8 @@ import logging
 import telepot
 
 # Importing the token file
-with open('TOKEN.txt', 'r') as token_file:
-    TOKEN = token_file.read().replace('\n', '')
+with open("TOKEN.txt", "r") as token_file:
+    TOKEN = token_file.read().replace("\n", "")
 
 # Version 0.1 will be able to launch ansible playbooks on remote hosts
 
@@ -29,7 +29,8 @@ with open('TOKEN.txt', 'r') as token_file:
 def playbook_runner(playbook_name):
     # -> not the definitive path but for now it will do
     r = ansible_runner.run(
-        private_data_dir='/.ansible/playbooks', playbook=playbook_name)
+        private_data_dir="/.ansible/playbooks", playbook=playbook_name
+    )
     # print("{}: {}".format(r.status, r.rc))
     # -> this will return the status and the return code of the playbook
     return r.status, r.rc
@@ -48,8 +49,7 @@ def host_up_controll():
         host_list = host_file.read().split("\n")
     responses = {}
     for host in host_list:
-        responses[host] = subprocess.check_output(
-            f"ping -c 1 {host}", shell=True)
+        responses[host] = subprocess.check_output(f"ping -c 1 {host}", shell=True)
 
     return responses
 
@@ -59,20 +59,22 @@ def custom_command_runner(host, command):  # not much but works so far
     # sudo ansible <host/group> -m shell -a "<command>"
     # not the best way but using ansible is easier than paramiko in this case
     response = subprocess.check_output(
-        f"ansible {host} -m shell -a {command}", shell=True, stderr=subprocess.STDOUT)
+        f"ansible {host} -m shell -a {command}", shell=True, stderr=subprocess.STDOUT
+    )
     return response
 
 
 class TelegramBot:
     def __init__(self, bot_token):
         self.bot = telepot.Bot(bot_token)
-        self.logger = logging.getLogger('TelegramBot')
+        self.logger = logging.getLogger("TelegramBot")
         self.logger.setLevel(logging.INFO)
         self.setup_logger()
 
     def setup_logger(self):
         formatter = logging.Formatter(
-            '%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+            "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+        )
 
         # Log to console
         ch = logging.StreamHandler()
@@ -81,33 +83,33 @@ class TelegramBot:
 
     def handle_message(self, msg):
         content_type, chat_type, chat_id = telepot.glance(msg)
-        message = msg['text'].split(" ")
-        if (message[0] == "/run"):
+        message = msg["text"].split(" ")
+        if message[0] == "/run":
             status, rc = playbook_runner(f"{message[1]}.yml")
             msg_return = "Status: " + status + "\nReturn code: " + rc
             self.bot.sendMessage(chat_id, msg_return)
-        elif (message[0] == "/battery"):
+        elif message[0] == "/battery":
             # Call ups control function
             pass
-        elif (message[0] == "/up"):
+        elif message[0] == "/up":
             reponses = host_up_controll()
             self.bot.sendMessage(chat_id, reponses)
-        elif (message[0] == "/command"):
+        elif message[0] == "/command":
             msg = custom_command_runner(message[1], f"'{message[2]}'")
             self.bot.sendMessage(chat_id, msg)
 
     def start(self):
         self.bot.message_loop(self.handle_message)
-        self.logger.info('Bot is listening...')
+        self.logger.info("Bot is listening...")
         while True:
             try:
                 time.sleep(10)
                 # check_ups_battery() -> this will work as a listener for the ups battery activity
             except KeyboardInterrupt:
-                self.logger.info('Bot stopped')
+                self.logger.info("Bot stopped")
                 exit()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     bot = TelegramBot(TOKEN)
     bot.start()
