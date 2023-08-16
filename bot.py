@@ -7,15 +7,16 @@
 # - Know if the hosts are up or not             :tick
 # - Launch custom command on selected host      :tikck
 
-import time
+import logging
 import os
 import subprocess
+import time
+
 import ansible_runner
-import logging
+import telepot
 
 # Importing the telepot library
 
-import telepot
 
 # Importing the token file
 with open("TOKEN.txt", "r") as token_file:
