@@ -51,7 +51,10 @@ def ups_control():
         # Control if ups_battery.alert exists
             #if so return battery mode on
             # else return normal state
-        pass
+        if(exists("/.ups_battery.alert")):
+            return "battery mode on"
+        else:
+            return "normal state"
 
 def host_up_controll():
     # use a host file and send a ping
@@ -94,8 +97,8 @@ class TelegramBot:
             msg_return = "Status: " + status + "\nReturn code: " + rc
             self.bot.sendMessage(chat_id, msg_return)
         elif(message[0] == "/battery"):
-            #Call ups control function
-            pass
+            response = ups_control()
+            self.bot.sendMessage(chat_id, response)
         elif(message[0] == "/up"):
             reponses = host_up_controll()
             self.bot.sendMessage(chat_id, reponses)
