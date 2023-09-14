@@ -5,17 +5,28 @@
 # - Launch ansible playbooks on remote hosts    :tick
 # - Know if the ups is on battery mode or not   :tick
 # - Know if the hosts are up or not             :tick
-# - Launch custom command on selected host      :tikck
+# - Launch custom command on selected host      :tick
+#
+# - Docker generic -> info about runners and containers 
 
+# Thinking about using the same way of launching remote command (or playbooks) to control docker containers
+# Using ansible_runner the docker lib is not necessary, but it will be used for other things
 import time
 from os.path import exists
 import subprocess
-import ansible_runner
 import logging
 
-# Importing the telepot library
+# Ansible lib
+import ansible_runner
 
+
+# Docker lib
+import docker
+
+
+# Importing the telepot library
 import telepot
+
 
 # Importing the token file
 with open('TOKEN.txt', 'r') as token_file:
