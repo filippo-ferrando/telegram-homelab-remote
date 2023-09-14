@@ -3,7 +3,7 @@
 
 # FEATURES:
 # - Launch ansible playbooks on remote hosts    :tick
-# - Know if the ups is on battery mode or not
+# - Know if the ups is on battery mode or not   :tick
 # - Know if the hosts are up or not             :tick
 # - Launch custom command on selected host      :tikck
 

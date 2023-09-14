@@ -5,10 +5,14 @@ This project aim to create a simple telegram bot to send custom command at my se
 I want to be able to execute ansible playbook from anywhere with only my phone and (this is quite important) visualize the ups status; and in case it is on battery mode gently shutdown the servers
 
 ## Features
-- ansible-playbook runner
-- ups control
-- custom command runner 
-- host up control 
+- :white_check_mark: ansible-playbook runner
+- :white_check_mark: ups control
+- :white_check_mark: custom command runner 
+- :white_check_mark: host up control 
+- :construction_worker: docker generic integration
+- :construction_worker: control status, health of a container
+- :construction_worker: start and stop containers ( and see what is running)
+- :construction_worker: docker integration with remote containers
 - we'll see...
 
 ## Technologies
@@ -16,3 +20,4 @@ I want to be able to execute ansible playbook from anywhere with only my phone a
 - Ansible
 - Telegram
 - Telepot
+- Docker
