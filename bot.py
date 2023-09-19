@@ -61,18 +61,25 @@ def docker_ps():
     response = subprocess.check_output(f"ansible all -m shell -a 'docker ps'", shell=True, stderr=subprocess.STDOUT) # ps ha to run on all hosts
     return response
 
-def docker_start():
-    pass
+def docker_start(host, container_name):
+    response = subprocess.check_output(f"ansible {host} -m shell -a 'docker run -d {container_name}'", shell=True, stderr=subprocess.STDOUT) # ps ha to run on all hosts
+    return response
 
-def docker_stop():
-    pass
+def docker_stop(host, container_name):
+    response = subprocess.check_output(f"ansible {host} -m shell -a 'docker stop {container_name}'", shell=True, stderr=subprocess.STDOUT) # ps ha to run on all hosts
+    return response
 
-def docker_health():
-    pass
+def docker_health(host, container_name):
+    response = subprocess.check_output(f"ansible {host} -m shell -a 'docker inspect {container_name}'", shell=True, stderr=subprocess.STDOUT) # ps ha to run on all hosts
+    return response
 
-def docker_info():
-    pass
+def docker_info(host):
+    response = subprocess.check_output(f"ansible {host} -m shell -a 'docker stats'", shell=True, stderr=subprocess.STDOUT) # ps ha to run on all hosts
+    return response
 
+def docker_images(host):
+    response = subprocess.check_output(f"ansible {host} -m shell -a 'docker images'", shell=True, stderr=subprocess.STDOUT) # ps ha to run on all hosts
+    return response
 
 def ups_control():
         # Control if ups_battery.alert exists
@@ -132,6 +139,28 @@ class TelegramBot:
         elif(message[0] == "/command"):
             msg = custom_command_runner(message[1], f"'{message[2]}'")     
             self.bot.sendMessage(chat_id, msg)
+        # Docker commands
+        elif(message[0] == "/docker"):
+            if(message[1] == "ps"):
+                response = docker_ps()
+                self.bot.sendMessage(chat_id, response)
+            elif(message[1] == "start"):
+                response = docker_start(message[2], message[3])
+                self.bot.sendMessage(chat_id, response)
+            elif(message[1] == "stop"):
+                response = docker_stop(message[2], message[3])
+                self.bot.sendMessage(chat_id, response)
+            elif(message[1] == "health"):
+                response = docker_health(message[2], message[3])
+                self.bot.sendMessage(chat_id, response)
+            elif(message[1] == "info"):
+                response = docker_info(message[2])
+                self.bot.sendMessage(chat_id, response)
+            elif(message[1] == "images"):
+                response = docker_images(message[2])
+                self.bot.sendMessage(chat_id, response)
+            else:
+                self.bot.sendMessage(chat_id, "Command not found")
     
     def start(self):
         self.bot.message_loop(self.handle_message)
