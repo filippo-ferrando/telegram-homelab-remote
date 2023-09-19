@@ -35,7 +35,7 @@ global CHAT_ID
 def playbook_runner(playbook_name):
     """
 
-    :param playbook_name: 
+    :param playbook_name:
 
     """
     # -> not the definitive path but for now it will do
@@ -79,8 +79,8 @@ def docker_ps():
 def docker_start(host, container_name):
     """
 
-    :param host: 
-    :param container_name: 
+    :param host:
+    :param container_name:
 
     """
     response = subprocess.check_output(
@@ -94,8 +94,8 @@ def docker_start(host, container_name):
 def docker_stop(host, container_name):
     """
 
-    :param host: 
-    :param container_name: 
+    :param host:
+    :param container_name:
 
     """
     response = subprocess.check_output(
@@ -109,8 +109,8 @@ def docker_stop(host, container_name):
 def docker_health(host, container_name):
     """
 
-    :param host: 
-    :param container_name: 
+    :param host:
+    :param container_name:
 
     """
     response = subprocess.check_output(
@@ -124,7 +124,7 @@ def docker_health(host, container_name):
 def docker_info(host):
     """
 
-    :param host: 
+    :param host:
 
     """
     response = subprocess.check_output(
@@ -138,7 +138,7 @@ def docker_info(host):
 def docker_images(host):
     """
 
-    :param host: 
+    :param host:
 
     """
     response = subprocess.check_output(
@@ -177,8 +177,8 @@ def host_up_controll():
 def custom_command_runner(host, command):  # not much but works so far
     """
 
-    :param host: 
-    :param command: 
+    :param host:
+    :param command:
 
     """
     # structure of the command
@@ -212,7 +212,7 @@ class TelegramBot:
     def handle_message(self, msg):
         """
 
-        :param msg: 
+        :param msg:
 
         """
         global CHAT_ID
