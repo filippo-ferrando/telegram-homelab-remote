@@ -57,6 +57,22 @@ def check_ups_battery(self):
     else:
         pass
 
+def docker_ps():
+    response = subprocess.check_output(f"ansible all -m shell -a 'docker ps'", shell=True, stderr=subprocess.STDOUT) # ps ha to run on all hosts
+    return response
+
+def docker_start():
+    pass
+
+def docker_stop():
+    pass
+
+def docker_health():
+    pass
+
+def docker_info():
+    pass
+
 
 def ups_control():
         # Control if ups_battery.alert exists
