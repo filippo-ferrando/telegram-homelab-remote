@@ -39,9 +39,8 @@ def playbook_runner(playbook_name):
 
     """
     # -> not the definitive path but for now it will do
-    r = ansible_runner.run(
-        private_data_dir="/.ansible/playbooks", playbook=playbook_name
-    )
+    r = ansible_runner.run(private_data_dir="/.ansible/playbooks",
+                           playbook=playbook_name)
     # print("{}: {}".format(r.status, r.rc))
     # -> this will return the status and the return code of the playbook
     return r.status, r.rc
@@ -54,16 +53,16 @@ def check_ups_battery(self):
     if exists("/.ups_battery.alert"):
         # send text to admin
         self.bot.sendMessage(
-            CHAT_ID, "Ups battery mode on, sending shutdown command to all hosts"
-        )
+            CHAT_ID,
+            "Ups battery mode on, sending shutdown command to all hosts")
         # send shutdown command to all hosts
         status, rc = playbook_runner("shutdown_ups.yml")
         msg_return = "Status: " + status + "\nReturn code: " + rc
         self.bot.sendMessage(CHAT_ID, msg_return)
         # delete .ups_battery.alert
-        subprocess.check_output(
-            "rm /.ups_battery.alert", shell=True, stderr=subprocess.STDOUT
-        )
+        subprocess.check_output("rm /.ups_battery.alert",
+                                shell=True,
+                                stderr=subprocess.STDOUT)
     else:
         pass
 
@@ -71,8 +70,9 @@ def check_ups_battery(self):
 def docker_ps():
     """ """
     response = subprocess.check_output(
-        f"ansible all -m shell -a 'docker ps'", shell=True, stderr=subprocess.STDOUT
-    )  # ps ha to run on all hosts
+        f"ansible all -m shell -a 'docker ps'",
+        shell=True,
+        stderr=subprocess.STDOUT)  # ps ha to run on all hosts
     return response
 
 
@@ -167,9 +167,9 @@ def host_up_controll():
         host_list = host_file.read().split("\n")
     responses = {}
     for host in host_list:
-        responses[host] = subprocess.check_output(
-            f"ping -c 1 {host}", shell=True, stderr=subprocess.STDOUT
-        )
+        responses[host] = subprocess.check_output(f"ping -c 1 {host}",
+                                                  shell=True,
+                                                  stderr=subprocess.STDOUT)
 
     return responses
 
@@ -184,14 +184,15 @@ def custom_command_runner(host, command):  # not much but works so far
     # structure of the command
     # sudo ansible <host/group> -m shell -a "<command>"
     # not the best way but using ansible is easier than paramiko in this case
-    response = subprocess.check_output(
-        f"ansible {host} -m shell -a {command}", shell=True, stderr=subprocess.STDOUT
-    )
+    response = subprocess.check_output(f"ansible {host} -m shell -a {command}",
+                                       shell=True,
+                                       stderr=subprocess.STDOUT)
     return response
 
 
 class TelegramBot:
     """ """
+
     def __init__(self, bot_token):
         self.bot = telepot.Bot(bot_token)
         self.logger = logging.getLogger("TelegramBot")
@@ -201,8 +202,7 @@ class TelegramBot:
     def setup_logger(self):
         """ """
         formatter = logging.Formatter(
-            "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
-        )
+            "%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 
         # Log to console
         ch = logging.StreamHandler()
