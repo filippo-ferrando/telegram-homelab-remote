@@ -9,9 +9,9 @@ I want to be able to execute ansible playbook from anywhere with only my phone a
 - :white_check_mark: ups control
 - :white_check_mark: custom command runner 
 - :white_check_mark: host up control 
-- :construction_worker: docker generic integration
-- :construction_worker: control status, health of a container
-- :construction_worker: start and stop containers ( and see what is running)
+- :white_check_mark: docker generic integration
+- :white_check_mark: control status, health of a container
+- :white_check_mark: start and stop containers ( and see what is running)
 - :construction_worker: docker integration with remote containers
 - we'll see...
 
