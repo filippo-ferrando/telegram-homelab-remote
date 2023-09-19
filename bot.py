@@ -35,6 +35,11 @@ global CHAT_ID
 
 
 def playbook_runner(playbook_name):
+    """
+
+    :param playbook_name: 
+
+    """
     # -> not the definitive path but for now it will do
     r = ansible_runner.run(
         private_data_dir="/.ansible/playbooks", playbook=playbook_name
@@ -45,6 +50,7 @@ def playbook_runner(playbook_name):
 
 
 def check_ups_battery(self):
+    """ """
     global CHAT_ID
     # controll if .ups_battery.alert exists
     if exists("/.ups_battery.alert"):
@@ -65,6 +71,7 @@ def check_ups_battery(self):
 
 
 def docker_ps():
+    """ """
     response = subprocess.check_output(
         f"ansible all -m shell -a 'docker ps'", shell=True, stderr=subprocess.STDOUT
     )  # ps ha to run on all hosts
@@ -72,6 +79,12 @@ def docker_ps():
 
 
 def docker_start(host, container_name):
+    """
+
+    :param host: 
+    :param container_name: 
+
+    """
     response = subprocess.check_output(
         f"ansible {host} -m shell -a 'docker run -d {container_name}'",
         shell=True,
@@ -81,6 +94,12 @@ def docker_start(host, container_name):
 
 
 def docker_stop(host, container_name):
+    """
+
+    :param host: 
+    :param container_name: 
+
+    """
     response = subprocess.check_output(
         f"ansible {host} -m shell -a 'docker stop {container_name}'",
         shell=True,
@@ -90,6 +109,12 @@ def docker_stop(host, container_name):
 
 
 def docker_health(host, container_name):
+    """
+
+    :param host: 
+    :param container_name: 
+
+    """
     response = subprocess.check_output(
         f"ansible {host} -m shell -a 'docker inspect {container_name}'",
         shell=True,
@@ -99,6 +124,11 @@ def docker_health(host, container_name):
 
 
 def docker_info(host):
+    """
+
+    :param host: 
+
+    """
     response = subprocess.check_output(
         f"ansible {host} -m shell -a 'docker stats'",
         shell=True,
@@ -108,6 +138,11 @@ def docker_info(host):
 
 
 def docker_images(host):
+    """
+
+    :param host: 
+
+    """
     response = subprocess.check_output(
         f"ansible {host} -m shell -a 'docker images'",
         shell=True,
@@ -117,6 +152,7 @@ def docker_images(host):
 
 
 def ups_control():
+    """ """
     # Control if ups_battery.alert exists
     # if so return battery mode on
     # else return normal state
@@ -127,6 +163,7 @@ def ups_control():
 
 
 def host_up_controll():
+    """ """
     # use a host file and send a ping
     with open(".hosts.txt", "r") as host_file:
         host_list = host_file.read().split("\n")
@@ -140,6 +177,12 @@ def host_up_controll():
 
 
 def custom_command_runner(host, command):  # not much but works so far
+    """
+
+    :param host: 
+    :param command: 
+
+    """
     # structure of the command
     # sudo ansible <host/group> -m shell -a "<command>"
     # not the best way but using ansible is easier than paramiko in this case
@@ -150,6 +193,7 @@ def custom_command_runner(host, command):  # not much but works so far
 
 
 class TelegramBot:
+    """ """
     def __init__(self, bot_token):
         self.bot = telepot.Bot(bot_token)
         self.logger = logging.getLogger("TelegramBot")
@@ -157,6 +201,7 @@ class TelegramBot:
         self.setup_logger()
 
     def setup_logger(self):
+        """ """
         formatter = logging.Formatter(
             "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
         )
@@ -167,6 +212,11 @@ class TelegramBot:
         self.logger.addHandler(ch)
 
     def handle_message(self, msg):
+        """
+
+        :param msg: 
+
+        """
         global CHAT_ID
         content_type, chat_type, chat_id = telepot.glance(msg)
         CHAT_ID = chat_id
@@ -208,6 +258,7 @@ class TelegramBot:
                 self.bot.sendMessage(chat_id, "Command not found")
 
     def start(self):
+        """ """
         self.bot.message_loop(self.handle_message)
         self.logger.info("Bot is listening...")
         while True:
