@@ -9,24 +9,19 @@
 #
 # - Docker generic -> info about runners and containers
 
+import logging
+import subprocess
 # Thinking about using the same way of launching remote command (or playbooks) to control docker containers
 # Using ansible_runner the docker lib is not necessary, but it will be used for other things
 import time
 from os.path import exists
-import subprocess
-import logging
 
 # Ansible lib
 import ansible_runner
-
-
 # Docker lib
 import docker
-
-
 # Importing the telepot library
 import telepot
-
 
 # Importing the token file
 with open("TOKEN.txt", "r") as token_file:
