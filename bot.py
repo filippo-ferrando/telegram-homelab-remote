@@ -71,7 +71,7 @@ def docker_ps():
     response = subprocess.check_output(
         f"ansible all -m shell -a 'docker ps'",
         shell=True,
-        stderr=subprocess.STDOUT)  # ps ha to run on all hosts
+        stderr=subprocess.STDOUT)  # ps has to run on all hosts
     return response
 
 
